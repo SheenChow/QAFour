@@ -4,12 +4,14 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.four.qa.model.Question;
+import com.four.qa.model.RQuestion;
 
 /**
  * @author Tiaoyu
@@ -18,10 +20,45 @@ import com.four.qa.model.Question;
 @Path("/Question")
 public interface IQuestionService {
 
+	/**
+	 * 通过话题tpid获得问题
+	 * @author Tiaoyu
+	 * @time 2016/6/17 12:26
+	 * @param tpid
+	 * @return
+	 */
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON + "; charset=UTF-8" })
+	@Consumes(MediaType.APPLICATION_JSON + "; charset=UTF-8")
 	@Path("/getListByTPID/{tpid}")
-	public List<Question> getListByTPID(@PathParam("tpid") String tpid);
+	public List<Question> getListByTPID(@PathParam("tpid") int tpid);
 
+	/**
+	 * 创建一个问题
+	 * @author Tiaoyu
+	 * @time 2016/6/24 12:29
+	 * @param q
+	 * @return
+	 */
+	@POST
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON + "; charset=UTF-8" })
+	@Consumes(MediaType.APPLICATION_JSON + "; charset=UTF-8")
+	@Path("/createQuestion")
+	public Question createQuestion(RQuestion q);
+	
+	/**
+	 * 通过关键字模糊搜索问题
+	 * 
+	 * @author mabing
+	 * @time 2016-6-26 15:32
+	 * @param key
+	 * @return
+	 */
+	@GET
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON + "; charset=UTF-8" })
+	@Consumes(MediaType.APPLICATION_JSON + "; charset=UTF-8")
+	@Path("/getListByQKey/{key}")
+	public List<Question> getListByQKey(@PathParam("key") String key);
+
+	
 }

@@ -50,7 +50,7 @@
 </style>
 
 <body>
-	<div class="navi"></div>
+	<jsp:include page="head.jsp"></jsp:include>
 	<div class="ftopics" id="ftopics"></div>
 	<div class="stopics" id="stopics"></div>
 </body>

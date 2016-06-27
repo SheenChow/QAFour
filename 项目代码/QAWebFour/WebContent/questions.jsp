@@ -43,7 +43,7 @@
 	width: 600px;
 	height: 100px;
 	float: left;
-	background-color: #FFF0F5;
+	background-color: #FFFFFF;
 }
 
 .favourite a {
@@ -68,7 +68,7 @@
 	width: 260px;
 	height: 200px;
 	float: right;
-	background-color: #FFF0F5;
+	background-color: #FFFFFF;
 	width: 260px;
 }
 
@@ -85,7 +85,7 @@
 	width: 260px;
 	height: 200px;
 	float: right;
-	background-color: #FFF0F5;
+	background-color: #FFFFFF;
 	width: 260px;
 }
 
@@ -99,26 +99,56 @@
 
 .title {
 	margin-top: 10px;
-	width: 100px;
+	width: 300px;
 	height: 30px;
 	float: left;
-	background-color: #FFF0F5;
+	background-color: #FFFFFF;
 }
 
 .sort {
 	margin-top: 10px;
 	height: 30px;
 	float: right;
-	backaground-color: #FFF0F5;
+	backaground-color: #FFFFFF;
 	height: 30px;
 }
 
-.hot {
+.question {
 	margin-top: 10px;
 	width: 600px;
-	height: 500px;
-	background-color: #FFF0F5;
+	height: auto;
+	background-color: #FFFFFF;
 	width: 600px;
+}
+
+.question ul {
+	list-style: none;
+	margin-right: 40px;
+}
+
+.qstitle {
+	font-family: "微软雅黑";
+	font-size: 20px;
+}
+
+.qsuser {
+	margin-top: 5px;
+	font-style: italic;
+	font-family: "微软雅黑";
+	font-size: 15px;
+}
+
+.qscontent {
+	font-size: 15px;
+}
+
+.qsextend {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+.qsextend a{
+	color: #99CCFF;
+	font-style: italic;
 }
 
 .clear {
@@ -126,7 +156,7 @@
 }
 </style>
 <body>
-	<div class="navi"></div>
+	<jsp:include page="head.jsp"></jsp:include>
 	<div class="main">
 		<div class="content">
 			<h2>关注话题</h2>
@@ -139,21 +169,28 @@
 					class="easyui-linkbutton">时间排序</a>
 			</div>
 			<div class="clear" id="clear"></div>
-			<div class="hot" id="hot"></div>
+
+			<div class="question" id="question"></div>
 		</div>
 		<div class="expend">
 
 			<div class="detail" id="detail"></div>
 			<div class="clear" id="clear"></div>
+
 			<div class="tpfather" id="tpfather"></div>
 			<div class="clear" id="clear"></div>
+
 			<div class="tpson" id="tpson"></div>
 			<div class="clear" id="clear"></div>
+
 
 		</div>
 	</div>
 </body>
 <script>
+	/*
+		获得用户关注的话题
+	 */
 	$
 			.ajax({
 				type : "GET",
@@ -173,7 +210,9 @@
 					$("#favourite").html(htm)
 				}
 			});
-
+	/*
+		获得当前话题具体信息
+	 */
 	$.ajax({
 		type : "GET",
 		url : "http://localhost:8080/QAFour/REST/Topic/getTopic/"
@@ -190,6 +229,9 @@
 			$("#title").html("<h2>" + data.tpname + "</h2>");
 		}
 	});
+	/**
+		获得父话题
+	 */
 	$
 			.ajax({
 				type : "GET",
@@ -208,6 +250,10 @@
 					$("#tpfather").html(htm);
 				}
 			});
+
+	/*
+		获得子话题
+	 */
 	$
 			.ajax({
 				type : "GET",
@@ -231,7 +277,32 @@
 					$("#tpson").html(htm);
 				}
 			});
-
+	/**
+		问题列表（时间顺序）
+	 */
+	$.ajax({
+		type : "GET",
+		url : "http://localhost:8080/QAFour/REST/Question/getListByTPID/"
+				+ GetQueryString("tpid"),
+		contentType : "application/json",
+		dataType : "json",
+		data : null,
+		success : function(data) {
+			var htm = "";
+			/* alert(data.length) */
+			for (var i = 0; i < data.length; ++i) {
+				htm += "<br/><ul><li><a class='qstitle'>" + data[i].qstitle
+						+ "</a></li>" + "<li><div class='qsuser'>"
+						+ data[i].qsuser.uname + ", " + data[i].qsuser.ucontent
+						+ "</div><div class='qstime'>" + data[i].qstime
+						+ "</div></li><br/>" + "<li><div class='qscontent'>"
+						+ data[i].qscontent + "</div></li>"
+						+ "<li><div class='qsextend'><a>评论</a></li></div>"
+						+ "</ul><br/>";
+			}
+			$("#question").html(htm)
+		}
+	});
 	function toQuestions(id) {
 		location.href = "/QAWebFour/questions.jsp?tpid=" + id;
 	}

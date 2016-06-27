@@ -30,7 +30,7 @@ public class BaseDao<T, PK extends Serializable> extends HibernateDaoSupport imp
 	protected Class<T> getEntityClass() {
 		return entityClass;
 	}
-
+	
 	/**
 	 * 让spring提供构造函数注入
 	 */
@@ -59,6 +59,22 @@ public class BaseDao<T, PK extends Serializable> extends HibernateDaoSupport imp
 			return (List<T>) getHibernateTemplate()
 					.findByCriteria(DetachedCriteria.forClass(getEntityClass()).addOrder(Order.desc(orderBy)));
 	}
+	
+	/**
+	 * 模糊查找
+	 * 
+	 * @author mabing
+	 * @time 2016-6-26 14:39
+	 * @param queryString
+	 * @param value
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<T> find(String queryString,Object value)
+	{
+		return (List<T>) getHibernateTemplate().find(queryString, value);
+	}
+
 
 	@SuppressWarnings("unchecked")
 	public List<T> findBy(String orderBy, boolean isAsc, Criterion... criterions) {

@@ -24,7 +24,7 @@ public class UserInfo {
 	@Id
 	@GeneratedValue(generator = "MODEL_USER_ID_GENERATOR")
 	@GenericGenerator(name = "MODEL_USER_ID_GENERATOR", strategy = "native")
-	private String ID;
+	private int ID;
 
 	@Column(name = "uname", nullable = false)
 	private String uname;
@@ -38,18 +38,19 @@ public class UserInfo {
 	public UserInfo() {
 	}
 
-	public UserInfo(String iD, String uname, String upwd) {
+	public UserInfo(int iD, String uname, String upwd, String ucontent) {
 		super();
 		ID = iD;
 		this.uname = uname;
 		this.upwd = upwd;
+		this.ucontent = ucontent;
 	}
 
-	public String getID() {
+	public int getID() {
 		return ID;
 	}
 
-	public void setID(String iD) {
+	public void setID(int iD) {
 		ID = iD;
 	}
 
@@ -69,9 +70,17 @@ public class UserInfo {
 		this.upwd = upwd;
 	}
 
+	public String getUcontent() {
+		return ucontent;
+	}
+
+	public void setUcontent(String ucontent) {
+		this.ucontent = ucontent;
+	}
+
 	@Override
 	public String toString() {
-		return "User [ID=" + ID + ", uname=" + uname + ", upwd=" + upwd + "]";
+		return "UserInfo [ID=" + ID + ", uname=" + uname + ", upwd=" + upwd + ", ucontent=" + ucontent + "]";
 	}
 
 }
